@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GOAP", "GOAP\GOAP.csproj", "{C0C2670C-0BC8-4291-A1DA-495920F28EDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestField", "TestField\TestField.csproj", "{7E60C58E-049C-4E8F-8769-BECE187863C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{99ED65E4-0F13-43F3-8D15-756F39229844}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{C0C2670C-0BC8-4291-A1DA-495920F28EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0C2670C-0BC8-4291-A1DA-495920F28EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0C2670C-0BC8-4291-A1DA-495920F28EDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E60C58E-049C-4E8F-8769-BECE187863C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E60C58E-049C-4E8F-8769-BECE187863C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E60C58E-049C-4E8F-8769-BECE187863C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E60C58E-049C-4E8F-8769-BECE187863C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99ED65E4-0F13-43F3-8D15-756F39229844}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99ED65E4-0F13-43F3-8D15-756F39229844}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99ED65E4-0F13-43F3-8D15-756F39229844}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99ED65E4-0F13-43F3-8D15-756F39229844}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
