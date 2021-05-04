@@ -9,7 +9,7 @@ namespace GOAP
         static List<Node> outcomeTree = new List<Node>();
         static List<Node> finalGoals = new List<Node>();
 
-        static int runningTotalCap = 20;
+        static int runningTotalCap = 2000;
 
         static void Reset()
         {
@@ -17,6 +17,11 @@ namespace GOAP
             lowCost = int.MaxValue;
             outcomeTree.Clear();
             finalGoals.Clear();
+        }
+
+        public static void SetRunningTotalCap(int capValue)
+        {
+            runningTotalCap = capValue;
         }
 
         public static Queue<GOAPAction<GameObjectRef>> CalcPlan(GOAPWorldState currentWorldstate, GOAPWorldState goal, List<GOAPAction<GameObjectRef>> actions)
