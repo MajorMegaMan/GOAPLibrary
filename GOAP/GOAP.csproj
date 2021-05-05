@@ -41,11 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GOAPAction.cs" />
+    <Compile Include="Core\GOAPAction.cs" />
     <Compile Include="GOAPAgent.cs" />
+    <Compile Include="GOAPAgentAction.cs" />
     <Compile Include="GOAPBehaviour.cs" />
-    <Compile Include="GOAPPlanner.cs" />
-    <Compile Include="GOAPWorldState.cs" />
+    <Compile Include="Core\GOAPPlanner.cs" />
+    <Compile Include="Core\GOAPWorldState.cs" />
     <Compile Include="StateMachine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

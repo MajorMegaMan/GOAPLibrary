@@ -4,22 +4,15 @@ using System.Text;
 using System.Diagnostics;
 using GOAP;
 
-
-
-using T_Action = GOAP.GOAPAction<TestProgram.FakeGameObject>;
-using T_WorldState = GOAP.GOAPWorldState;
-using T_Planner = GOAP.GOAPPlanner<TestProgram.FakeGameObject>;
-
-
 namespace TestProgram
 {
     class Manager
     {
-        public T_WorldState worldState;
-        public T_WorldState goal;
+        public GOAPWorldState worldState;
+        public GOAPWorldState goal;
 
-        public List<T_Action> actions;
-        public Queue<T_Action> plan;
+        public List<GOAPAction> actions;
+        public Queue<GOAPAction> plan;
 
         Stopwatch timer;
 
@@ -33,14 +26,14 @@ namespace TestProgram
             timer = Stopwatch.StartNew();
 
             Console.WriteLine("before plan : " + timer.ElapsedMilliseconds);
-            plan = T_Planner.CalcPlan(worldState, goal, actions);
+            plan = GOAPPlanner.CalcPlan(worldState, goal, actions);
             Console.WriteLine("after plan : " + timer.ElapsedMilliseconds);
             timer.Stop();
         }
 
-        T_WorldState InitWorldState()
+        GOAPWorldState InitWorldState()
         {
-            T_WorldState worldState = new T_WorldState();
+            GOAPWorldState worldState = new GOAPWorldState();
 
             worldState.CreateElement(WorldValues.storedWood, 0);
             worldState.CreateElement(WorldValues.holdItemType, WorldValues.HoldItemType.nothing);
@@ -48,9 +41,9 @@ namespace TestProgram
             return worldState;
         }
 
-        T_WorldState InitGoalState()
+        GOAPWorldState InitGoalState()
         {
-            T_WorldState goal = new T_WorldState();
+            GOAPWorldState goal = new GOAPWorldState();
 
             goal.CreateElement(WorldValues.storedWood, 1);
             goal.CreateElement(WorldValues.holdItemType, WorldValues.HoldItemType.nothing);
@@ -58,9 +51,9 @@ namespace TestProgram
             return goal;
         }
 
-        List<T_Action> InitActions()
+        List<GOAPAction> InitActions()
         {
-            List<T_Action> actions = new List<T_Action>();
+            List<GOAPAction> actions = new List<GOAPAction>();
 
             actions.Add(new PickUpWood());
             actions.Add(new StoreWood());

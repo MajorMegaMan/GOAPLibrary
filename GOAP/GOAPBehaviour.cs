@@ -4,7 +4,7 @@ namespace GOAP
 {
     public abstract class GOAPBehaviour<GameObjectRef>
     {
-        protected List<GOAPAction<GameObjectRef>> m_actions = new List<GOAPAction<GameObjectRef>>();
+        protected List<GOAPAgentAction<GameObjectRef>> m_actions = new List<GOAPAgentAction<GameObjectRef>>();
         protected GOAPWorldState m_selfishNeeds = new GOAPWorldState();
 
         public GOAPBehaviour()
@@ -14,9 +14,20 @@ namespace GOAP
 
         public abstract GOAPWorldState FindGoal(GOAPWorldState agentWorldState);
 
-        public List<GOAPAction<GameObjectRef>> GetActions()
+        public List<GOAPAgentAction<GameObjectRef>> GetActions()
         {
             return m_actions;
+        }
+
+        List<GOAPAction> GetBaseActions()
+        {
+            List<GOAPAction> baseActions = new List<GOAPAction>();
+            foreach(var act in m_actions)
+            {
+                baseActions.Add(act);
+            }
+
+            return baseActions;
         }
 
         public virtual void Update(GOAPAgent<GameObjectRef> agent, GOAPWorldState agentSelfishNeeds)
@@ -31,9 +42,16 @@ namespace GOAP
             return new GOAPWorldState(m_selfishNeeds);
         }
 
-        public Queue<GOAPAction<GameObjectRef>> CalcPlan(GOAPWorldState agentWorldState)
+        public Queue<GOAPAgentAction<GameObjectRef>> CalcPlan(GOAPWorldState agentWorldState)
         {
-            return GOAPPlanner<GameObjectRef>.CalcPlan(agentWorldState, FindGoal(agentWorldState), GetActions());
+            Queue<GOAPAction> plan = GOAPPlanner.CalcPlan(agentWorldState, FindGoal(agentWorldState), GetBaseActions());
+            Queue<GOAPAgentAction<GameObjectRef>> agentPlan = new Queue<GOAPAgentAction<GameObjectRef>>();
+            while(plan.Count > 0)
+            {
+                agentPlan.Enqueue((GOAPAgentAction<GameObjectRef>)plan.Dequeue());
+            }
+
+            return agentPlan;
         }
     }
 

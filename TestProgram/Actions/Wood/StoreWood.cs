@@ -5,7 +5,7 @@ using GOAP;
 
 namespace TestProgram
 {
-    class StoreWood : NonAgentAction
+    class StoreWood : GOAPAction
     {
         public StoreWood()
         {
