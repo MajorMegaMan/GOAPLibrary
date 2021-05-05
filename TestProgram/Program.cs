@@ -8,7 +8,7 @@ namespace TestProgram
         {
             Console.WriteLine("Hello World!");
 
-            Manager manager = new Manager();
+            BaseGOAPTest.BaseGOAPManager manager = new BaseGOAPTest.BaseGOAPManager();
 
             manager.Print();
 
