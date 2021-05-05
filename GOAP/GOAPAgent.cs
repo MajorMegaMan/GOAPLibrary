@@ -12,10 +12,10 @@ namespace GOAP
         GOAPWorldState worldState = null;
         GOAPWorldState m_combinedWorldState;
         GOAPWorldState m_selfishWorldState = null;
-        Queue<GOAPAction<GameObjectRef>> m_plan = new Queue<GOAPAction<GameObjectRef>>();
+        Queue<GOAPAgentAction<GameObjectRef>> m_plan = new Queue<GOAPAgentAction<GameObjectRef>>();
         GOAPBehaviour<GameObjectRef> m_behaviour;
 
-        GOAPAction<GameObjectRef> m_currentAction;
+        GOAPAgentAction<GameObjectRef> m_currentAction;
 
         public delegate MovementFlag MoveToFunc();
         MoveToFunc m_moveDelegate = () => { return MovementFlag.PARTIAL; };
@@ -230,19 +230,19 @@ namespace GOAP
             // Check result of performing action
             switch (m_currentAction.PerformAction(this, m_combinedWorldState))
             {
-                case GOAPAction<GameObjectRef>.ActionState.completed:
+                case GOAPAgentAction<GameObjectRef>.ActionState.completed:
                     {
                         // action was completed progress to the next action
                         m_stateMachine.SetState(0);
                         break;
                     }
-                case GOAPAction<GameObjectRef>.ActionState.performing:
+                case GOAPAgentAction<GameObjectRef>.ActionState.performing:
                     {
                         // still performing the action. Nothing needs to be done?
                         // maybe still need to check if in range
                         break;
                     }
-                case GOAPAction<GameObjectRef>.ActionState.interrupt:
+                case GOAPAgentAction<GameObjectRef>.ActionState.interrupt:
                     {
                         // action was interrupted and as a result was not completed therefore a new plan may be needed
                         FindPlan();
