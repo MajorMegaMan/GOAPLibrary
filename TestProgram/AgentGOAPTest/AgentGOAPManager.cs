@@ -41,6 +41,7 @@ namespace TestProgram.AgentGOAPTest
 
         void Update()
         {
+            Console.Clear();
             testAgent.Update();
         }
 
@@ -59,11 +60,14 @@ namespace TestProgram.AgentGOAPTest
             }
             else
             {
-                Console.WriteLine("Current action: null");
+                Console.WriteLine("Current action: planning");
             }
 
+
+            PrintPlanningTree();
+
             PrintWorldState(testAgent.GetAgentWorldstate());
-            Console.WriteLine();
+            PrintUsableActions();
             Console.WriteLine("===============================================");
             PrintPlan(testAgent.GetPlan(), testAgent.GetAgentWorldstate());
         }
@@ -89,12 +93,52 @@ namespace TestProgram.AgentGOAPTest
             while (agentPlan.Count > 0)
             {
                 var action = agentPlan.Dequeue();
-                Console.WriteLine(actionIndex++ + ". Performing action: " + action.GetName());
-                action.AddEffects(agentWorldstate);
-                PrintWorldState(agentWorldstate);
-                Console.WriteLine();
+                Console.WriteLine(actionIndex++ + ". Planned action: " + action.GetName());
+                //action.AddEffects(agentWorldstate);
+                //PrintWorldState(agentWorldstate);
+                //Console.WriteLine();
             }
             Console.WriteLine("End of Plan");
+        }
+
+        public void PrintUsableActions()
+        {
+            Console.WriteLine("     UsableActions");
+            Console.WriteLine();
+            Console.Write("         ");
+
+            var actions = testAgent.GetUsableActions();
+
+            foreach(var act in actions)
+            {
+                Console.Write(act.GetName() + ", ");
+            }
+            Console.WriteLine();
+        }
+
+        public void PrintPlanningTree()
+        {
+            var tree = GOAPPlanner.DebugBuildTree(testAgent.GetAgentWorldstate(), behaviours[0].FindGoal(testAgent.GetAgentWorldstate()), behaviours[0].GetBaseActions());
+
+            for(int i = 1; i < tree.Count; i++)
+            {
+                var node = tree[i];
+                Console.WriteLine(node.runningTotal + " : " + node.action.GetName());
+
+                Console.WriteLine();
+
+                var parent = node.parent;
+                while(parent != null)
+                {
+                    if(parent.action != null)
+                    {
+                        Console.Write(parent.action.GetName() + ", ");
+                    }
+                    parent = parent.parent;
+                }
+                Console.WriteLine();
+                Console.WriteLine("-----------------------------------------------");
+            }
         }
     }
 }

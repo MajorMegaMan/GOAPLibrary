@@ -19,7 +19,7 @@ namespace GOAP
             return m_actions;
         }
 
-        List<GOAPAction> GetBaseActions()
+        public List<GOAPAction> GetBaseActions()
         {
             List<GOAPAction> baseActions = new List<GOAPAction>();
             foreach(var act in m_actions)
@@ -52,6 +52,11 @@ namespace GOAP
             }
 
             return agentPlan;
+        }
+
+        public List<GOAPAction> GetUsableActions(GOAPWorldState agentWorldState)
+        {
+            return GOAPPlanner.GetUsableActions(agentWorldState, GetBaseActions());
         }
     }
 

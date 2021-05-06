@@ -35,17 +35,7 @@ namespace GOAP
 
             //List<Node> outcomeTree = new List<Node>();
             Node start = new Node(null, 0, currentWorldstate, null);
-            outcomeTree.Add(start);
-
-            //List<Node> finalGoals = new List<Node>();
-
-            for (int i = 0; i < outcomeTree.Count; i++)
-            {
-                if (!outcomeTree[i].isGoal)
-                {
-                    BuildTree(outcomeTree[i], goal, actions);
-                }
-            }
+            BuildTree(start, currentWorldstate, goal, actions);
 
             Node smallestCost = null;
             if (finalGoals.Count > 0)
@@ -98,7 +88,33 @@ namespace GOAP
             return usableActions;
         }
 
-        static void BuildTree(Node node, GOAPWorldState goal, List<GOAPAction> actions)
+        public static List<Node> DebugBuildTree(GOAPWorldState currentWorldstate, GOAPWorldState goal, List<GOAPAction> actions)
+        {
+            Node start = new Node(null, 0, currentWorldstate, null);
+            BuildTree(start, currentWorldstate, goal, actions);
+            return new List<Node>(outcomeTree);
+        }
+
+        static void BuildTree(Node start, GOAPWorldState currentWorldstate, GOAPWorldState goal, List<GOAPAction> actions)
+        {
+            // reset tree
+            outcomeTree.Clear();
+
+            // start new tree
+            outcomeTree.Add(start);
+
+            //List<Node> finalGoals = new List<Node>();
+
+            for (int i = 0; i < outcomeTree.Count; i++)
+            {
+                if (!outcomeTree[i].isGoal)
+                {
+                    ExpandNode(outcomeTree[i], goal, actions);
+                }
+            }
+        }
+
+        static void ExpandNode(Node node, GOAPWorldState goal, List<GOAPAction> actions)
         {
             List<GOAPAction> usableActions = GetUsableActions(node.currentState, actions);
 
@@ -135,7 +151,7 @@ namespace GOAP
             // Possibly from the very first node
         }
 
-        class Node
+        public class Node
         {
             public Node parent;
             public int runningTotal;

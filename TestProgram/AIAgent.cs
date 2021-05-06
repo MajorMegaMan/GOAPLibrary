@@ -46,5 +46,10 @@ namespace TestProgram
         {
             return m_goapAgent.GetAction();
         }
+
+        public List<GOAPAction> GetUsableActions()
+        {
+            return m_goapAgent.GetUsableActions();
+        }
     }
 }

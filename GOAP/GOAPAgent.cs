@@ -140,6 +140,11 @@ namespace GOAP
             return new Queue<GOAPAgentAction<GameObjectRef>>(m_plan);
         }
 
+        public List<GOAPAction> GetUsableActions()
+        {
+            return m_behaviour.GetUsableActions(m_combinedWorldState);
+        }
+
         public GOAPAction GetAction()
         {
             return m_currentAction;
@@ -181,6 +186,7 @@ namespace GOAP
                 // there is no plan
                 // find a new one
                 FindPlan();
+                m_currentAction = null;
             }
         }
 
@@ -248,7 +254,6 @@ namespace GOAP
                     {
                         // action was completed progress to the next action
                         m_currentAction.AddEffects(m_combinedWorldState);
-                        m_currentAction = null;
                         m_stateMachine.SetState(0);
                         break;
                     }
