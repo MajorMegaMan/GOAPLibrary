@@ -9,6 +9,8 @@ namespace TestProgram
         // World values
         public static string storedWood { get; private set; } = "stored_wood";// int
         public static string storedFood { get; private set; } = "stored_food";// int
+        public static string woodAvailable { get; private set; } = "wood_available";// bool
+        public static string worldWoodCount { get; private set; } = "world_wood_count";// int
 
 
         // Agent Specific values
@@ -18,7 +20,8 @@ namespace TestProgram
         {
             nothing,
             wood,
-            food
+            food,
+            axe
         }
     }
 }

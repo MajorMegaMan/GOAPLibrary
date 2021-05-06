@@ -5,31 +5,26 @@ using GOAP;
 
 namespace TestProgram.AgentGOAPTest
 {
-    class PickUpWood : GOAPAgentAction<FakeGameObject>
+    class ChopWood : GOAPAgentAction<FakeGameObject>
     {
-        public PickUpWood()
+        public ChopWood()
         {
-            preconditions.CreateElement(WorldValues.holdItemType, WorldValues.HoldItemType.nothing);
-            preconditions.CreateElement(WorldValues.woodAvailable, true);
+            preconditions.CreateElement(WorldValues.holdItemType, WorldValues.HoldItemType.axe);
 
-            effects.CreateElement(WorldValues.holdItemType, WorldValues.HoldItemType.wood);
-            effects.CreateElement(WorldValues.woodAvailable, false); // This is a possible effect
-            effects.CreateElement(WorldValues.worldWoodCount, -1);
+            effects.CreateElement(WorldValues.woodAvailable, true);
+            effects.CreateElement(WorldValues.worldWoodCount, +1);
 
-            name = "Pick Up Wood";
+            name = "Chop Wood";
         }
 
         public override void AddEffects(GOAPWorldState state)
         {
-            state.SetElementValue(WorldValues.holdItemType, WorldValues.HoldItemType.wood);
+            state.SetElementValue(WorldValues.woodAvailable, true);
 
             var woodCountData = state.GetData(WorldValues.worldWoodCount);
             int value = woodCountData.ConvertValue<int>();
-            value--;
+            value++;
             woodCountData.value = value;
-
-            bool isWoodAvailable = value > 0;
-            state.SetElementValue(WorldValues.woodAvailable, isWoodAvailable);
         }
 
         public override bool EnterAction(GOAPAgent<FakeGameObject> agent)

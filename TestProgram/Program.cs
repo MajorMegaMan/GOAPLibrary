@@ -4,15 +4,15 @@ namespace TestProgram
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             Console.WriteLine("Hello World!");
 
-            BaseGOAPTest.BaseGOAPManager manager = new BaseGOAPTest.BaseGOAPManager();
+            //BaseGOAPTest.BaseGOAPManager manager = new BaseGOAPTest.BaseGOAPManager();
+            AgentGOAPTest.AgentGOAPManager manager = new AgentGOAPTest.AgentGOAPManager();
 
-            manager.Print();
-
-            Console.ReadLine();
+            manager.Run();
+            return 0;
         }
     }
 }

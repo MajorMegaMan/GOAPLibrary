@@ -18,7 +18,7 @@ namespace GOAP
         GOAPAgentAction<GameObjectRef> m_currentAction;
 
         public delegate MovementFlag MoveToFunc();
-        MoveToFunc m_moveDelegate = () => { return MovementFlag.PARTIAL; };
+        MoveToFunc m_moveDelegate = () => { return MovementFlag.COMPLETE; };
 
         public delegate void Func();
         Func m_enterNavigation = () => { };
@@ -135,6 +135,16 @@ namespace GOAP
             m_stateMachine.SetState(0);
         }
 
+        public Queue<GOAPAgentAction<GameObjectRef>> GetPlan()
+        {
+            return new Queue<GOAPAgentAction<GameObjectRef>>(m_plan);
+        }
+
+        public GOAPAction GetAction()
+        {
+            return m_currentAction;
+        }
+
         void DecideState()
         {
             if (m_plan.Count > 0)
@@ -154,12 +164,16 @@ namespace GOAP
                 {
                     // state = perform
                     SetState(State.PERFORM_ACTION);
+                    // also intiate the first perform frame
+                    PerformAction();
                 }
                 else
                 {
                     // else 
                     // state = moveto
                     StartNavigation();
+                    // also intiate the first moveTo frame
+                    MoveTo();
                 }
             }
             else
@@ -233,6 +247,8 @@ namespace GOAP
                 case GOAPAgentAction<GameObjectRef>.ActionState.completed:
                     {
                         // action was completed progress to the next action
+                        m_currentAction.AddEffects(m_combinedWorldState);
+                        m_currentAction = null;
                         m_stateMachine.SetState(0);
                         break;
                     }
