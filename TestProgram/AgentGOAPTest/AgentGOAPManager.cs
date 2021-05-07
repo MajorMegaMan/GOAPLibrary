@@ -52,6 +52,8 @@ namespace TestProgram.AgentGOAPTest
 
             Console.WriteLine("===============================================");
 
+            PrintPlanningTree();
+
             var currentAction = testAgent.GetAction();
             if (currentAction != null)
             {
@@ -62,9 +64,6 @@ namespace TestProgram.AgentGOAPTest
             {
                 Console.WriteLine("Current action: planning");
             }
-
-
-            PrintPlanningTree();
 
             PrintWorldState(testAgent.GetAgentWorldstate());
             PrintUsableActions();
@@ -122,11 +121,21 @@ namespace TestProgram.AgentGOAPTest
 
             for(int i = 1; i < tree.Count; i++)
             {
-                var node = tree[i];
-                Console.WriteLine(node.runningTotal + " : " + node.action.GetName());
-
+                var node = tree[i]; 
+            
+                Console.Write(node.depth + " : " + node.action.GetName());
+            
+                if(node.isGoal)
+                {
+                    Console.WriteLine(" --- GOAL");
+                }
+                else
+                {
+                    Console.WriteLine();
+                }
+            
                 Console.WriteLine();
-
+            
                 var parent = node.parent;
                 while(parent != null)
                 {
@@ -139,6 +148,7 @@ namespace TestProgram.AgentGOAPTest
                 Console.WriteLine();
                 Console.WriteLine("-----------------------------------------------");
             }
+
         }
     }
 }

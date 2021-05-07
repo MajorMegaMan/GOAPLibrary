@@ -9,7 +9,7 @@ namespace GOAP
         static List<Node> outcomeTree = new List<Node>();
         static List<Node> finalGoals = new List<Node>();
 
-        static int runningTotalCap = 2000;
+        static int maxDepth = 2000;
 
         static void Reset()
         {
@@ -19,9 +19,9 @@ namespace GOAP
             finalGoals.Clear();
         }
 
-        public static void SetRunningTotalCap(int capValue)
+        public static void SetMaxDepth(int capValue)
         {
-            runningTotalCap = capValue;
+            maxDepth = capValue;
         }
 
         public static Queue<GOAPAction> CalcPlan(GOAPWorldState currentWorldstate, GOAPWorldState goal, List<GOAPAction> actions)
@@ -34,7 +34,7 @@ namespace GOAP
             Reset();
 
             //List<Node> outcomeTree = new List<Node>();
-            Node start = new Node(null, 0, currentWorldstate, null);
+            Node start = new Node(null, 0, 0, currentWorldstate, null);
             BuildTree(start, currentWorldstate, goal, actions);
 
             Node smallestCost = null;
@@ -90,15 +90,18 @@ namespace GOAP
 
         public static List<Node> DebugBuildTree(GOAPWorldState currentWorldstate, GOAPWorldState goal, List<GOAPAction> actions)
         {
-            Node start = new Node(null, 0, currentWorldstate, null);
+            Node start = new Node(null, 0, 0, currentWorldstate, null);
             BuildTree(start, currentWorldstate, goal, actions);
-            return new List<Node>(outcomeTree);
+
+            List<Node> result = new List<Node>(outcomeTree);
+            return result;
         }
 
         static void BuildTree(Node start, GOAPWorldState currentWorldstate, GOAPWorldState goal, List<GOAPAction> actions)
         {
             // reset tree
             outcomeTree.Clear();
+            finalGoals.Clear();
 
             // start new tree
             outcomeTree.Add(start);
@@ -120,15 +123,16 @@ namespace GOAP
 
             foreach (var act in usableActions)
             {
-                if (foundGoal && lowCost < node.runningTotal || node.runningTotal > runningTotalCap)
+                if (foundGoal && lowCost < node.runningTotal || node.depth > maxDepth)
                 {
                     break;
                 }
                 GOAPWorldState affectedState = new GOAPWorldState(node.currentState);
                 act.AddEffects(affectedState);
 
-                Node newLeaf = new Node(node, node.runningTotal + act.GetWeight(), affectedState, act);
-                //outcomeTree.Add(newLeaf);
+                node.childCount++;
+                Node newLeaf = new Node(node, node.depth +  1, node.runningTotal + act.GetWeight(), affectedState, act);
+                outcomeTree.Add(newLeaf);
 
                 if (affectedState.CheckState(goal))
                 {
@@ -144,7 +148,7 @@ namespace GOAP
                 else
                 {
                     // keep searching
-                    outcomeTree.Add(newLeaf);
+                    //outcomeTree.Add(newLeaf);
                 }
             }
             // it is possible that no usable actions were found. and in this case the tree will stop building.
@@ -154,15 +158,19 @@ namespace GOAP
         public class Node
         {
             public Node parent;
+            public int depth = 0;
+            public int childCount = 0;
+
             public int runningTotal;
             public GOAPWorldState currentState;
             // The action that was performed to get to this worldstate
             public GOAPAction action;
             public bool isGoal = false;
 
-            public Node(Node parent, int runningTotal, GOAPWorldState currentState, GOAPAction action)
+            public Node(Node parent, int depth, int runningTotal, GOAPWorldState currentState, GOAPAction action)
             {
                 this.parent = parent;
+                this.depth = depth;
                 this.runningTotal = runningTotal;
                 this.currentState = currentState;
                 this.action = action;
