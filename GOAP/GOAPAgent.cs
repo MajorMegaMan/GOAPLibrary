@@ -24,6 +24,9 @@ namespace GOAP
         Func m_enterNavigation = () => { };
         Func m_exitNavigation = () => { };
 
+        Func m_startPerform = () => { };
+        Func m_exitPerform = () => { };
+
         public enum State
         {
             PLANNING,
@@ -69,6 +72,16 @@ namespace GOAP
         public void SetSelfishWorldState()
         {
             m_selfishWorldState = m_behaviour.GetSelfishNeeds();
+        }
+
+        public void SetStartPerformingFunc(Func startPerforming)
+        {
+            m_startPerform = startPerforming;
+        }
+
+        public void SetExitPerformingFunc(Func exitPerforming)
+        {
+            m_exitPerform = exitPerforming;
         }
 
         public GameObjectRef GetAgentObject()
@@ -132,7 +145,7 @@ namespace GOAP
             // Get GOAPplan
             // need to find goal
             m_plan = m_behaviour.CalcPlan(m_combinedWorldState);
-            m_stateMachine.SetState(0);
+            SetState(State.PLANNING);
         }
 
         public Queue<GOAPAgentAction<GameObjectRef>> GetPlan()
@@ -169,6 +182,7 @@ namespace GOAP
                 {
                     // state = perform
                     SetState(State.PERFORM_ACTION);
+                    m_startPerform();
                     // also intiate the first perform frame
                     PerformAction();
                 }
@@ -218,6 +232,7 @@ namespace GOAP
                             // if action is in range exit movement
                             m_exitNavigation();
                             SetState(State.PERFORM_ACTION);
+                            m_startPerform();
                         }
                         break;
                     }
@@ -254,7 +269,8 @@ namespace GOAP
                     {
                         // action was completed progress to the next action
                         m_currentAction.AddEffects(m_combinedWorldState);
-                        m_stateMachine.SetState(0);
+                        SetState(State.PLANNING);
+                        m_exitPerform();
                         break;
                     }
                 case GOAPAgentAction<GameObjectRef>.ActionState.performing:
@@ -266,6 +282,7 @@ namespace GOAP
                 case GOAPAgentAction<GameObjectRef>.ActionState.interrupt:
                     {
                         // action was interrupted and as a result was not completed therefore a new plan may be needed
+                        m_exitPerform();
                         FindPlan();
                         break;
                     }
