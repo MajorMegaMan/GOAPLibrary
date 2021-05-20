@@ -153,6 +153,16 @@ namespace GOAP
             return new Queue<GOAPAgentAction<GameObjectRef>>(m_plan);
         }
 
+        public GOAPAgentAction<GameObjectRef> GetCurrentAction()
+        {
+            return m_currentAction;
+        }
+
+        public GOAPWorldState GetGoal()
+        {
+            return m_behaviour.FindGoal(m_combinedWorldState);
+        }
+
         public List<GOAPAction> GetUsableActions()
         {
             return m_behaviour.GetUsableActions(m_combinedWorldState);
