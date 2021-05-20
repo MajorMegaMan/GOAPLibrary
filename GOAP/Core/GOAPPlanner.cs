@@ -9,7 +9,7 @@ namespace GOAP
         static List<Node> outcomeTree = new List<Node>();
         static List<Node> finalGoals = new List<Node>();
 
-        static int maxDepth = 2000;
+        static int maxDepth = 50;
 
         static void Reset()
         {
